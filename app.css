@@ -73,8 +73,8 @@ button, input, textarea, select { font-family: inherit; }
 .sheetHeader .mini{ width:44px; display:flex; justify-content:center; }
 .sheetHeader .mini button{ width:42px; height:42px; border-radius: 999px; border:0; background: rgba(255,255,255,0.25); }
 .sheetBody{ padding: 10px 18px 18px; }
-.pickGrid{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 14px 14px; padding: 8px 6px 6px; }
-.pickBtn{ border: 1px solid rgba(30,38,48,0.10); background: rgba(255,255,255,0.22); padding: 12px 10px; border-radius: 18px; text-align:left; }
+.pickGrid{ display:grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px 14px; padding: 8px 6px 6px; }
+.pickBtn{ min-width: 0;  border: 1px solid rgba(30,38,48,0.10); background: rgba(255,255,255,0.22); padding: 12px 10px; border-radius: 18px; text-align:left; }
 .pickBtn:active{transform: scale(0.99); opacity: 0.88;}
 .pickBtn .pTop{ display:flex; align-items:center; gap: 10px; }
 .pickBtn .pName{ font-size: 14px; }
@@ -242,7 +242,7 @@ hr.hair{ border:0; border-top: 1px solid rgba(30,38,48,0.10); margin: 12px 0; }
 
 
 @media (max-width: 420px){
-  .pickGrid{ grid-template-columns: repeat(2, 1fr); }
+  .pickGrid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .pickBtn .pName{ font-size: 13px; }
   .pickBtn .pHint{ font-size: 11px; }
 }
