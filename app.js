@@ -221,7 +221,7 @@ function renderTree(){
     <button class="fab" id="fab" aria-label="Add">+</button>
   `;
 
-  
+
   // Ensure receipt note overlay stack exists
   const tw = app.querySelector(".treeWrap");
   if(tw && !document.getElementById("noteOverlay")){
@@ -765,7 +765,7 @@ function renderNoteOverlay(animateNew=false){
     const t = TYPES.find(x=>x.id===e.type) || TYPES[TYPES.length-1];
     const idx = i; // 0..n-1
     // Overlap offsets
-    const dx = idx * 10;
+    const dx = 0;
     const dy = idx * 12;
     // Tiny rotation for cuteness (deterministic from id)
     const rot = ((seededJitter(e.id)[2] || 0) / 12).toFixed(2); // about [-2,2]
@@ -793,6 +793,12 @@ function renderNoteOverlay(animateNew=false){
       ${note ? `<div class="note">${escapeHTML(note)}</div>` : ``}
       <div class="hint">${hint}</div>
     `;
+    div.addEventListener("click", (ev)=> {
+      ev.stopPropagation();
+      // remove this note from the stack
+      shownNoteIds = shownNoteIds.filter(x => x !== e.id);
+      renderNoteOverlay(false);
+    });
     host.appendChild(div);
   });
 }

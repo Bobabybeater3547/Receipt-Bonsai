@@ -1,5 +1,5 @@
 // Receipt Bonsai — cache-first service worker
-const CACHE = "receipt-bonsai-cache-v9";
+const CACHE = "receipt-bonsai-cache-v10";
 const ASSETS = [
   "./",
   "./index.html",
