@@ -223,6 +223,9 @@ function renderTree(){
   document.getElementById("goSettings").onclick = ()=>{ state.view="settings"; render(); };
   document.getElementById("fab").onclick = ()=> openTypePicker();
 
+  // Sync the bonsai stage with your receipt count
+  updateStageArt(true);
+
 }
 
 
@@ -256,7 +259,9 @@ function updateStageArt(force=false){
   const changed = (lastStage === null) ? true : (s !== lastStage);
   lastStage = s;
 
-  img.setAttribute("href", `./bonsai/stage_${s}.png`);
+  const href = `./bonsai/stage_${s}.png`;
+  img.setAttribute("href", href);
+  try{ img.setAttributeNS("http://www.w3.org/1999/xlink","href", href); }catch(e){}
 
   if(force && changed){
     // cute grow pop
