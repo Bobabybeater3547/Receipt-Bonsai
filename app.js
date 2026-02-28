@@ -195,6 +195,9 @@ function renderTree(){
     <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
       <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000" flood-opacity="0.12"/>
     </filter>
+    <filter id="leafSoft" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000" flood-opacity="0.14"/>
+    </filter>
     <linearGradient id="potGrad" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.35"/>
       <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.10"/>
@@ -278,9 +281,14 @@ function drawLeaves(){
   layer.innerHTML = "";
 
   const entries = [...data.entries].sort((a,b)=>new Date(a.at)-new Date(b.at));
+
+  const LEAF_D = "M-6 26c18-6 32-24 28-40C14-26-6-36-20-28c-14 8-18 32 14 54z";
+  const RECEIPT_D = "M-10 -12h20v22l-3-2-3 2-3-2-3 2-3-2-3 2V-12z";
+
   entries.forEach((e, idx)=>{
     const anchor = ANCHORS[idx % ANCHORS.length];
     const jitter = seededJitter(e.id);
+
     const x = anchor[0] + jitter[0];
     const y = anchor[1] + jitter[1];
     const rot = jitter[2];
@@ -291,33 +299,56 @@ function drawLeaves(){
     const g = document.createElementNS("http://www.w3.org/2000/svg","g");
     g.setAttribute("class","leafHit");
     g.setAttribute("data-id", e.id);
-    g.setAttribute("transform", `translate(${x} ${y}) rotate(${rot})`);
+    g.setAttribute("filter","url(#leafSoft)");
+    g.setAttribute("transform", `translate(${x} ${y}) rotate(${rot}) scale(0.88)`);
 
-    const useLeaf = document.createElementNS("http://www.w3.org/2000/svg","use");
-    useLeaf.setAttributeNS("http://www.w3.org/1999/xlink","href","#leafShape");
-    useLeaf.setAttribute("style", `color:${color};`);
-    g.appendChild(useLeaf);
+    const fill = document.createElementNS("http://www.w3.org/2000/svg","path");
+    fill.setAttribute("d", LEAF_D);
+    fill.setAttribute("fill", color);
+    fill.setAttribute("opacity", "0.88");
+    g.appendChild(fill);
 
-    const useMark = document.createElementNS("http://www.w3.org/2000/svg","use");
-    useMark.setAttributeNS("http://www.w3.org/1999/xlink","href","#leafReceipt");
-    useMark.setAttribute("transform","translate(8 2) scale(0.9)");
-    useMark.setAttribute("opacity","0.95");
-    g.appendChild(useMark);
+    const hi = document.createElementNS("http://www.w3.org/2000/svg","path");
+    hi.setAttribute("d", "M-10 -20c10 10 18 26 22 44");
+    hi.setAttribute("fill","none");
+    hi.setAttribute("stroke","#FFFFFF");
+    hi.setAttribute("opacity","0.18");
+    hi.setAttribute("stroke-width","3");
+    hi.setAttribute("stroke-linecap","round");
+    g.appendChild(hi);
 
     const outline = document.createElementNS("http://www.w3.org/2000/svg","path");
-    outline.setAttribute("d","M-6 26c18-6 32-24 28-40C14-26-6-36-20-28c-14 8-18 32 14 54z");
+    outline.setAttribute("d", LEAF_D);
     outline.setAttribute("fill","none");
     outline.setAttribute("stroke","#C67970");
-    outline.setAttribute("stroke-width","2.2");
+    outline.setAttribute("stroke-width","2.3");
     outline.setAttribute("opacity","0.55");
     outline.setAttribute("stroke-linecap","round");
     outline.setAttribute("stroke-linejoin","round");
     g.appendChild(outline);
 
+    const sticker = document.createElementNS("http://www.w3.org/2000/svg","path");
+    sticker.setAttribute("d", RECEIPT_D);
+    sticker.setAttribute("fill", "#FBF6EE");
+    sticker.setAttribute("opacity", "0.72");
+    sticker.setAttribute("transform","translate(8 2) scale(0.9)");
+    g.appendChild(sticker);
+
+    const lines = document.createElementNS("http://www.w3.org/2000/svg","path");
+    lines.setAttribute("d","M2 -4h12M2 0h12M2 4h9");
+    lines.setAttribute("fill","none");
+    lines.setAttribute("stroke","#C67970");
+    lines.setAttribute("stroke-width","2.1");
+    lines.setAttribute("stroke-linecap","round");
+    lines.setAttribute("opacity","0.78");
+    lines.setAttribute("transform","translate(8 2)");
+    g.appendChild(lines);
+
     g.addEventListener("click", ()=> openEdit(e.id));
     layer.appendChild(g);
   });
 }
+
 
 function seededJitter(seed){
   let h = 2166136261;
