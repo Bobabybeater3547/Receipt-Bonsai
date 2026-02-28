@@ -194,7 +194,7 @@ function renderTree(){
     ${topbar(left, right)}
     <div class="titleBlock">
       <div class="title">Receipt Bonsai</div>
-      <div class="sub">A bonsai grown from daily expenses.</div>
+      <div class="sub">Tiny receipts become leaves. No guilt. Just a tree.</div>
     </div>
 
     <div class="panel">
@@ -221,7 +221,17 @@ function renderTree(){
     <button class="fab" id="fab" aria-label="Add">+</button>
   `;
 
-  document.getElementById("goList").onclick = ()=>{ state.view="list"; render(); };
+  
+  // Ensure receipt note overlay stack exists
+  const tw = app.querySelector(".treeWrap");
+  if(tw && !document.getElementById("noteOverlay")){
+    const od = document.createElement("div");
+    od.id = "noteOverlay";
+    od.className = "noteOverlay";
+    tw.appendChild(od);
+  }
+
+document.getElementById("goList").onclick = ()=>{ state.view="list"; render(); };
   document.getElementById("goSettings").onclick = ()=>{ state.view="settings"; render(); };
   document.getElementById("fab").onclick = ()=> openTypePicker();
 
