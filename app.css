@@ -246,3 +246,13 @@ hr.hair{ border:0; border-top: 1px solid rgba(30,38,48,0.10); margin: 12px 0; }
   .pickBtn .pName{ font-size: 13px; }
   .pickBtn .pHint{ font-size: 11px; }
 }
+
+
+/* Picker tile text wrapping fixes (prevents truncation on narrow screens) */
+.pickBtn .pTop > div{ flex: 1; min-width: 0; }
+.pickBtn .pName, .pickBtn .pHint{ white-space: normal; overflow: visible; text-overflow: clip; }
+
+@media (max-width: 420px){
+  .iconMini{ width: 26px; height: 26px; }
+  .iconMini svg{ width: 26px; height: 26px; }
+}
