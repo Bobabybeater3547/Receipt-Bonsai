@@ -99,6 +99,7 @@ const state = {
 };
 
 let data = loadData();
+let lastStage = null;
 let lastAddedId = null;
 
 function loadData(){
@@ -202,16 +203,14 @@ function renderTree(){
         </div>
         <svg id="treeSvg" viewBox="0 0 800 820" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Your receipt bonsai">
   <defs>
-    <filter id="leafSoft" x="-30%" y="-30%" width="160%" height="160%">
-      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000" flood-opacity="0.14"/>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity="0.14"/>
     </filter>
   </defs>
 
-  <!-- Bonsai stage art (cute illustration) -->
-  <image id="bonsaiStageImage" href="./bonsai/stage_0.png" x="0" y="0" width="800" height="820" preserveAspectRatio="xMidYMid meet" />
-
-  <!-- Leaves drawn by JS -->
-  <g id="leafLayer"></g>
+  <g id="bonsaiStageWrap" filter="url(#softShadow)">
+    <image id="bonsaiStageImage" href="./bonsai/stage_0.png" x="0" y="0" width="800" height="820" preserveAspectRatio="xMidYMid meet" />
+  </g>
 </svg>
 
       </div>
@@ -224,24 +223,19 @@ function renderTree(){
   document.getElementById("goSettings").onclick = ()=>{ state.view="settings"; render(); };
   document.getElementById("fab").onclick = ()=> openTypePicker();
 
-  drawLeaves();
 }
 
 
 function stageIndex(n){
-  // 12 stages (0..11). Keep it gentle at the start, slower later.
-  if(n <= 0) return 0;
-  if(n <= 1) return 1;
-  if(n <= 3) return 2;
-  if(n <= 6) return 3;
-  if(n <= 10) return 4;
-  if(n <= 15) return 5;
-  if(n <= 22) return 6;
-  if(n <= 30) return 7;
-  if(n <= 40) return 8;
-  if(n <= 55) return 9;
-  if(n <= 75) return 10;
-  return 11;
+  // 28 stages (0..27). Grow quickly at the start, then slow down.
+  // n is number of receipts (leaves).
+  const thresholds = [
+    0,1,2,3,4,5,6,7,8,10,12,14,16,18,21,24,27,30,34,38,43,48,54,60,67,75,84,999999
+  ];
+  for(let i=0;i<thresholds.length;i++){
+    if(n <= thresholds[i]) return i;
+  }
+  return 27;
 }
 function growthStage(n){
   if(n === 0) return "Seedling. Add your first leaf.";
@@ -252,71 +246,25 @@ function growthStage(n){
   return "A whole life, in leaves.";
 }
 
-function drawLeaves(){
-  const svg = document.getElementById("treeSvg");
-  const layer = svg.querySelector("#leafLayer");
-  layer.innerHTML = "";
-
-  const entries = [...data.entries].sort((a,b)=>new Date(a.at)-new Date(b.at));
-
-  entries.forEach((e, idx)=>{
-    const anchor = ANCHORS[idx % ANCHORS.length];
-    const jitter = seededJitter(e.id);
-
-    const x = anchor[0] + jitter[0];
-    const y = anchor[1] + jitter[1];
-
-    const rot = jitter[2];
-    const swayDelay = ((jitter[0] + 30) % 30) / 10; // 0..3s-ish
-
-    const outer = document.createElementNS("http://www.w3.org/2000/svg","g");
-    outer.setAttribute("class","leafHit");
-    outer.setAttribute("data-id", e.id);
-    outer.setAttribute("transform", `translate(${x} ${y})`);
-    outer.setAttribute("filter","url(#leafSoft)");
-
-    // base transform (rotate + scale) separated from sway so CSS can add motion
-    const base = document.createElementNS("http://www.w3.org/2000/svg","g");
-    base.setAttribute("transform", `rotate(${rot}) scale(0.92)`);
-
-    const sway = document.createElementNS("http://www.w3.org/2000/svg","g");
-    sway.setAttribute("class", "leafSway");
-    sway.setAttribute("style", `animation-delay: -${swayDelay.toFixed(2)}s;`);
-
-    if(lastAddedId && e.id === lastAddedId){
-      sway.classList.add("leafPop");
-    }
-
-    const img = document.createElementNS("http://www.w3.org/2000/svg","image");
-    img.setAttribute("href", `./bonsai/leaf_${e.type}.png`);
-    img.setAttribute("x", "-48");
-    img.setAttribute("y", "-48");
-    img.setAttribute("width", "96");
-    img.setAttribute("height", "96");
-    img.setAttribute("preserveAspectRatio","xMidYMid meet");
-
-    sway.appendChild(img);
-    base.appendChild(sway);
-    outer.appendChild(base);
-
-    outer.addEventListener("click", ()=> {
-      animateOnce(sway, "leafTap", 320);
-      // open editor shortly after wobble starts
-      setTimeout(()=>openEdit(e.id), 60);
-    });
-    layer.appendChild(outer);
-  });
-
-  // pop only once
-  lastAddedId = null;
-}
-
-function updateStageArt(){
+function updateStageArt(force=false){
   const img = document.getElementById("bonsaiStageImage");
-  if(!img) return;
+  const wrap = document.getElementById("bonsaiStageWrap");
+  if(!img || !wrap) return;
+
   const n = data.entries.length;
   const s = stageIndex(n);
+  const changed = (lastStage === null) ? true : (s !== lastStage);
+  lastStage = s;
+
   img.setAttribute("href", `./bonsai/stage_${s}.png`);
+
+  if(force && changed){
+    // cute grow pop
+    wrap.classList.remove("stageGrow");
+    void wrap.getBBox?.();
+    wrap.classList.add("stageGrow");
+    setTimeout(()=>wrap.classList.remove("stageGrow"), 420);
+  }
 }
 
 

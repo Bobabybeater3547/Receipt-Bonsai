@@ -146,3 +146,19 @@ hr.hair{ border:0; border-top: 1px solid rgba(30,38,48,0.10); margin: 12px 0; }
   transform-origin: center;
   transform-box: fill-box;
 }
+
+
+@keyframes stageGrow {
+  0%   { transform: scale(0.985); }
+  55%  { transform: scale(1.012); }
+  100% { transform: scale(1.0); }
+}
+#bonsaiStageWrap { transform-origin: center; }
+#bonsaiStageWrap.stageGrow { animation: stageGrow 420ms ease-out 1; }
+
+@keyframes bonsaiBreathe2 {
+  0% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-2px) scale(1.004); }
+  100% { transform: translateY(0px) scale(1); }
+}
+#treeSvg { animation: bonsaiBreathe2 7.2s ease-in-out infinite; transform-origin: center; }
