@@ -76,26 +76,12 @@ const TYPES = [
   }
 ];
 
-const TYPE_ICON = {
-  "cafe": "<svg viewBox=\"0 0 64 64\" aria-hidden=\"true\" focusable=\"false\">\n      <g fill=\"none\" stroke=\"#C67970\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        \n        <path d=\"M18 38c0 4 3 7 7 7h14c4 0 7-3 7-7V24H18v14z\"/>\n        <path d=\"M46 28h6c3 0 5 2 5 5s-2 5-5 5h-6\"/>\n        <path d=\"M16 46h32\"/><path d=\"M14 49h36\"/>\n        <path d=\"M22 26h20v6H22z\" fill=\"#7A4636\" opacity=\"0.75\" stroke=\"none\"/>\n        <path d=\"M24 29c3-3 9-3 12 0\" stroke=\"#FBF6EE\" stroke-width=\"2.2\"/>\n        \n      </g>\n    </svg>",
-  "konbini": "<svg viewBox=\"0 0 64 64\" aria-hidden=\"true\" focusable=\"false\">\n      <g fill=\"none\" stroke=\"#C67970\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        \n        <path d=\"M18 22h28v34H18z\"/>\n        <path d=\"M22 22l2-10h16l2 10\"/>\n        <path d=\"M24 36h16\"/><path d=\"M24 44h16\"/>\n        <circle cx=\"26\" cy=\"30\" r=\"2.2\" fill=\"#77B592\" stroke=\"none\"/>\n        <circle cx=\"32\" cy=\"30\" r=\"2.2\" fill=\"#F6E1A6\" stroke=\"none\"/>\n        <circle cx=\"38\" cy=\"30\" r=\"2.2\" fill=\"#F3C7C4\" stroke=\"none\"/>\n        \n      </g>\n    </svg>",
-  "groceries": "<svg viewBox=\"0 0 64 64\" aria-hidden=\"true\" focusable=\"false\">\n      <g fill=\"none\" stroke=\"#C67970\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        \n        <path d=\"M22 26h20l-2 26H24l-2-26z\"/>\n        <path d=\"M26 26c0-6 12-6 12 0\"/>\n        <path d=\"M26 38h12\"/>\n        <path d=\"M28 32c1 2 2 2 4 0\" stroke=\"#77B592\" stroke-width=\"2.2\"/>\n        \n      </g>\n    </svg>",
-  "transit": "<svg viewBox=\"0 0 64 64\" aria-hidden=\"true\" focusable=\"false\">\n      <g fill=\"none\" stroke=\"#C67970\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        \n        <path d=\"M22 14h20v30c0 4-3 7-7 7H29c-4 0-7-3-7-7V14z\"/>\n        <path d=\"M24 22h16\"/><path d=\"M24 30h16\"/>\n        <circle cx=\"28\" cy=\"46\" r=\"2.6\" fill=\"#1E2630\" opacity=\"0.45\" stroke=\"none\"/>\n        <circle cx=\"36\" cy=\"46\" r=\"2.6\" fill=\"#1E2630\" opacity=\"0.45\" stroke=\"none\"/>\n        <path d=\"M20 50h24\"/>\n        \n      </g>\n    </svg>",
-  "books": "<svg viewBox=\"0 0 64 64\" aria-hidden=\"true\" focusable=\"false\">\n      <g fill=\"none\" stroke=\"#C67970\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        \n        <path d=\"M22 16h18c3 0 6 2 6 5v27c-2-2-4-3-6-3H22V16z\"/>\n        <path d=\"M22 16c0 3-2 5-5 5v27c3 0 5 2 5 5\"/>\n        <path d=\"M26 26h12\"/><path d=\"M26 32h12\"/>\n        \n      </g>\n    </svg>",
-  "gift": "<svg viewBox=\"0 0 64 64\" aria-hidden=\"true\" focusable=\"false\">\n      <g fill=\"none\" stroke=\"#C67970\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        \n        <path d=\"M20 30h24v22H20z\"/>\n        <path d=\"M20 30h24v-6H20v6z\"/>\n        <path d=\"M32 24v28\"/>\n        <path d=\"M28 24c-3 0-5-2-5-4s2-4 5-2c2 1 3 3 4 6\"/>\n        <path d=\"M36 24c3 0 5-2 5-4s-2-4-5-2c-2 1-3 3-4 6\"/>\n        \n      </g>\n    </svg>",
-  "home": "<svg viewBox=\"0 0 64 64\" aria-hidden=\"true\" focusable=\"false\">\n      <g fill=\"none\" stroke=\"#C67970\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        \n        <path d=\"M20 32l12-12 12 12\"/>\n        <path d=\"M24 30v22h16V30\"/>\n        <path d=\"M30 52V40h4v12\"/>\n        <path d=\"M28 36h8\"/>\n        \n      </g>\n    </svg>",
-  "dining": "<svg viewBox=\"0 0 64 64\" aria-hidden=\"true\" focusable=\"false\">\n      <g fill=\"none\" stroke=\"#C67970\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        \n        <path d=\"M22 22h20v10c0 6-4 10-10 10s-10-4-10-10V22z\"/>\n        <path d=\"M22 48h20\"/>\n        <path d=\"M28 18v10\"/><path d=\"M36 18v10\"/>\n        <path d=\"M32 22v20\" stroke=\"#FBF6EE\" stroke-width=\"2.2\"/>\n        \n      </g>\n    </svg>",
-  "market": "<svg viewBox=\"0 0 64 64\" aria-hidden=\"true\" focusable=\"false\">\n      <g fill=\"none\" stroke=\"#C67970\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        \n        <path d=\"M18 26h28l-2 26H20l-2-26z\"/>\n        <path d=\"M20 26c2-10 22-10 24 0\"/>\n        <path d=\"M24 38h16\"/>\n        <path d=\"M26 32c2 3 5 3 7 0\" stroke=\"#77B592\" stroke-width=\"2.2\"/>\n        \n      </g>\n    </svg>",
-  "pharmacy": "<svg viewBox=\"0 0 64 64\" aria-hidden=\"true\" focusable=\"false\">\n      <g fill=\"none\" stroke=\"#C67970\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        \n        <path d=\"M22 20h20v32H22z\"/>\n        <path d=\"M32 26v20\"/><path d=\"M24 36h16\"/>\n        <path d=\"M26 20c0-4 12-4 12 0\"/>\n        \n      </g>\n    </svg>",
-  "hobby": "<svg viewBox=\"0 0 64 64\" aria-hidden=\"true\" focusable=\"false\">\n      <g fill=\"none\" stroke=\"#C67970\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        \n        <path d=\"M20 42l24-16\"/>\n        <path d=\"M24 24l16 24\"/>\n        <circle cx=\"24\" cy=\"24\" r=\"4\"/>\n        <circle cx=\"40\" cy=\"40\" r=\"4\"/>\n        <path d=\"M30 30l4 4\" stroke=\"#77B592\" stroke-width=\"2.2\"/>\n        \n      </g>\n    </svg>",
-  "other": "<svg viewBox=\"0 0 64 64\" aria-hidden=\"true\" focusable=\"false\">\n      <g fill=\"none\" stroke=\"#C67970\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        \n        <path d=\"M22 18h20v28H22z\"/>\n        <path d=\"M26 22h12\"/><path d=\"M26 28h12\"/><path d=\"M26 34h12\"/>\n        <path d=\"M24 46l8 8 8-8\" stroke=\"#77B592\" stroke-width=\"2.2\"/>\n        \n      </g>\n    </svg>"
-};
-
 const ANCHORS = [[400, 120], [360, 135], [440, 140], [320, 160], [480, 165], [380, 175], [420, 175], [350, 205], [450, 210], [300, 205], [500, 210], [335, 235], [465, 235], [395, 245], [430, 255], [365, 255], [285, 245], [515, 245], [320, 280], [480, 280], [360, 295], [440, 295], [300, 315], [500, 315], [335, 335], [465, 335], [385, 350], [415, 350], [360, 375], [440, 375], [315, 365], [485, 365], [270, 290], [530, 290], [250, 330], [550, 330], [290, 410], [510, 410], [330, 430], [470, 430], [285, 455], [515, 455], [350, 470], [450, 470], [260, 490], [540, 490], [315, 510], [485, 510], [350, 520], [450, 520], [395, 535], [420, 540], [370, 545], [440, 550]];
 
 const state = {
   view: "tree",
-  search: ""
+  search: "",
+  statsMonthISO: (new Date(new Date().getFullYear(), new Date().getMonth(), 1)).toISOString()
 };
 
 let data = loadData();
@@ -137,6 +123,11 @@ function escapeHTML(s){
     .replaceAll("'","&#39;");
 }
 function escapeAttr(s){ return escapeHTML(s).replaceAll("\n"," "); }
+
+
+function iconImg(id, cls){
+  return `<img class="${cls}" src="./icons/${id}.png" alt="" />`;
+}
 
 function uid(){
   const a = new Uint8Array(16);
@@ -181,10 +172,11 @@ function render(){
   if(state.view === "tree") renderTree();
   if(state.view === "list") renderList();
   if(state.view === "settings") renderSettings();
+  if(state.view === "stats") renderStats();
 }
 
 function renderTree(){
-  const left = `<button class="iconBtn" id="goList" aria-label="List">🧾</button>`;
+  const left = `<button class="iconBtn" id="goList" aria-label="List">🧾</button><button class="iconBtn" id="goStats" aria-label="Stats">📊</button>`;
   const right = `<button class="iconBtn" id="goSettings" aria-label="Settings">⚙️</button>`;
 
   const count = data.entries.length;
@@ -232,6 +224,7 @@ function renderTree(){
   }
 
 document.getElementById("goList").onclick = ()=>{ state.view="list"; render(); };
+  document.getElementById("goStats").onclick = ()=>{ state.view="stats"; render(); };
   document.getElementById("goSettings").onclick = ()=>{ state.view="settings"; render(); };
   document.getElementById("fab").onclick = ()=> openTypePicker();
 
@@ -311,12 +304,9 @@ function openTypePicker(){
       <div class="sheetBody">
         <div class="pickGrid">
           ${TYPES.map(t=>`
-            <button class="pickBtn" data-type="${t.id}">
+            <button class="pickBtn" data-type="${t.id}" aria-label="${t.name}">
               <div class="pTop">
-                <span class="iconMini">${TYPE_ICON[t.id] || ""}</span>
-                <div>
-                  <div class="pName">${t.name}</div>
-                  </div>
+                ${iconImg(t.id,"iconPickImg")}
               </div>
             </button>
           `).join("")}
@@ -369,7 +359,7 @@ function editorHTML(e){
       </div>
       <div class="sheetBody">
         <div style="display:flex; gap:12px; align-items:center;">
-          <span class="iconMini">${TYPE_ICON[t.id] || ""}</span>
+          <span class="iconMini">${iconImg(t.id,"iconCardImg")}</span>
           <div>
             <div class="badge">${t.name}</div>
             <div class="small" style="margin-top:6px;">${shortDate(e.at)}</div>
@@ -427,12 +417,9 @@ function wireEditor(mode){
         <div class="sheetBody">
           <div class="pickGrid">
             ${TYPES.map(t=>`
-              <button class="pickBtn" data-type="${t.id}">
+              <button class="pickBtn" data-type="${t.id}" aria-label="${t.name}">
                 <div class="pTop">
-                  <span class="iconMini">${TYPE_ICON[t.id] || ""}</span>
-                  <div>
-                    <div class="pName">${t.name}</div>
-                    </div>
+                  ${iconImg(t.id,"iconPickImg")}
                 </div>
               </button>
             `).join("")}
@@ -543,9 +530,9 @@ function cardHTML(e){
   const amt = (showAmt && e.amount) ? ` • ¥${escapeHTML(e.amount)}` : "";
   return `
     <div class="card" data-id="${escapeAttr(e.id)}">
-      <span class="iconMini">${TYPE_ICON[t.id] || ""}</span>
+      ${iconImg(t.id,"iconCardImg")}
       <div class="meta">
-        <div class="d">${shortDate(e.at)} <span class="badge">${t.name}</span></div>
+        <div class="d">${shortDate(e.at)}</div>
         <div class="s">${escapeHTML(t.hint)}${amt}</div>
         ${e.note ? `<div class="n">${escapeHTML(e.note)}</div>` : ``}
       </div>
@@ -582,12 +569,7 @@ function renderSettings(){
           Import JSON backup
           <input id="importJSON" type="file" accept="application/json" style="display:none;">
         </label>
-        <hr class="hair"/>
-        <button class="btn" id="exportPoster">Export Bonsai Poster (SVG)</button>
-        <div class="small" style="margin-top:10px;">
-          Poster includes your leaves and can be saved/shared.
-        </div>
-      </div>
+              </div>
 
       <div class="block">
         <div class="h">Danger zone</div>
@@ -614,7 +596,6 @@ function renderSettings(){
 
   document.getElementById("exportJSON").onclick = exportJSONBackup;
   document.getElementById("importJSON").onchange = importJSONBackup;
-  document.getElementById("exportPoster").onclick = exportPosterSVG;
 
   document.getElementById("clearAll").onclick = ()=>{
     if(confirm("Clear all leaves? This cannot be undone.")){
@@ -656,49 +637,6 @@ function importJSONBackup(ev){
     }
   };
   reader.readAsText(file);
-}
-
-function exportPosterSVG(){
-  const svg = document.getElementById("treeSvg");
-  if(!svg) {
-    alert("Open the tree view first, then export.");
-    return;
-  }
-  const clone = svg.cloneNode(true);
-  clone.setAttribute("xmlns","http://www.w3.org/2000/svg");
-  clone.setAttribute("width","1080");
-  clone.setAttribute("height","1107");
-  clone.setAttribute("viewBox","0 0 800 820");
-
-  const bg = document.createElementNS("http://www.w3.org/2000/svg","rect");
-  bg.setAttribute("x","0"); bg.setAttribute("y","0");
-  bg.setAttribute("width","800"); bg.setAttribute("height","820");
-  bg.setAttribute("fill","#FBF6EE");
-  clone.insertBefore(bg, clone.firstChild);
-
-  const title = document.createElementNS("http://www.w3.org/2000/svg","text");
-  title.setAttribute("x","400"); title.setAttribute("y","70");
-  title.setAttribute("text-anchor","middle");
-  title.setAttribute("font-family","American Typewriter, Courier New, monospace");
-  title.setAttribute("font-size","34");
-  title.setAttribute("fill","#1E2630");
-  title.setAttribute("opacity","0.9");
-  title.textContent = "Receipt Bonsai";
-  clone.insertBefore(title, clone.firstChild);
-
-  const subtitle = document.createElementNS("http://www.w3.org/2000/svg","text");
-  subtitle.setAttribute("x","400"); subtitle.setAttribute("y","104");
-  subtitle.setAttribute("text-anchor","middle");
-  subtitle.setAttribute("font-family","American Typewriter, Courier New, monospace");
-  subtitle.setAttribute("font-size","16");
-  subtitle.setAttribute("fill","#1E2630");
-  subtitle.setAttribute("opacity","0.55");
-  subtitle.textContent = `${data.entries.length} leaf/leaves`;
-  clone.insertBefore(subtitle, clone.firstChild);
-
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n` + new XMLSerializer().serializeToString(clone);
-  const blob = new Blob([xml], {type:"image/svg+xml"});
-  downloadBlob(blob, "receipt-bonsai-poster.svg");
 }
 
 function downloadBlob(blob, filename){
@@ -773,7 +711,6 @@ function renderNoteOverlay(animateNew=false){
     const amt = (showAmt && e.amount) ? `¥${escapeHTML(e.amount)}` : "";
 
     const note = formatReceiptSnippet(e.note || "");
-    const hint = escapeHTML(t.hint || "");
 
     const div = document.createElement("div");
     div.className = "receiptNote" + ((animateNew && idx === list.length-1) ? " noteIn" : "");
@@ -782,14 +719,15 @@ function renderNoteOverlay(animateNew=false){
 
     div.innerHTML = `
       <div class="row1">
-        <div>
-          <div class="type">${escapeHTML(t.name)}</div>
-          <div class="when">${shortDate(e.at)}</div>
+        <div class="rowLeft">
+          ${iconImg(t.id,"iconNoteImg")}
+          <div>
+            <div class="when">${shortDate(e.at)}</div>
+          </div>
         </div>
         ${amt ? `<div class="amt">${amt}</div>` : ``}
       </div>
       ${note ? `<div class="note">${escapeHTML(note)}</div>` : ``}
-      <div class="hint">${hint}</div>
     `;
     div.addEventListener("click", (ev)=> {
       ev.stopPropagation();
@@ -808,6 +746,157 @@ function formatReceiptSnippet(s){
   const one = txt.replace(/\s+/g, " ");
   if(one.length <= 90) return one;
   return one.slice(0, 88) + "…";
+}
+
+
+function startOfMonth(d){
+  return new Date(d.getFullYear(), d.getMonth(), 1);
+}
+function addMonths(d, delta){
+  return new Date(d.getFullYear(), d.getMonth() + delta, 1);
+}
+function monthTitle(d){
+  return d.toLocaleDateString(undefined, { year:"numeric", month:"long" });
+}
+function parseAmount(s){
+  const txt = String(s || "").trim();
+  if(!txt) return 0;
+  const cleaned = txt.replace(/[^\d.,-]/g, "").replace(/,/g, "");
+  const n = Number(cleaned);
+  return Number.isFinite(n) ? n : 0;
+}
+function fmtYen(n){
+  try{
+    return new Intl.NumberFormat(undefined, { style:"currency", currency:"JPY", maximumFractionDigits:0 }).format(n);
+  }catch(e){
+    return "¥" + Math.round(n).toString();
+  }
+}
+
+function monthEntries(anchor){
+  const start = startOfMonth(anchor);
+  const end = addMonths(start, 1);
+  return data.entries.filter(e=>{
+    const t = new Date(e.at);
+    return t >= start && t < end;
+  });
+}
+
+function computeMonthSums(anchor){
+  const entries = monthEntries(anchor);
+  const sums = {};
+  TYPES.forEach(t=>{ sums[t.id] = 0; });
+  for(const e of entries){
+    sums[e.type] = (sums[e.type] || 0) + parseAmount(e.amount);
+  }
+  return sums;
+}
+
+function pieSVG(items, total){
+  const cx = 120, cy = 120;
+  const r1 = 92, r0 = 58;
+  let a0 = -Math.PI/2;
+  const paths = [];
+  const gap = 0.012; // radians
+  for(const it of items){
+    const frac = it.value / total;
+    const a1 = a0 + frac * Math.PI * 2;
+    const aa0 = a0 + gap;
+    const aa1 = a1 - gap;
+    if(aa1 <= aa0){
+      a0 = a1;
+      continue;
+    }
+    const x00 = cx + r1*Math.cos(aa0), y00 = cy + r1*Math.sin(aa0);
+    const x01 = cx + r1*Math.cos(aa1), y01 = cy + r1*Math.sin(aa1);
+    const x10 = cx + r0*Math.cos(aa1), y10 = cy + r0*Math.sin(aa1);
+    const x11 = cx + r0*Math.cos(aa0), y11 = cy + r0*Math.sin(aa0);
+    const large = (aa1-aa0) > Math.PI ? 1 : 0;
+    const d = [
+      `M ${x00.toFixed(2)} ${y00.toFixed(2)}`,
+      `A ${r1} ${r1} 0 ${large} 1 ${x01.toFixed(2)} ${y01.toFixed(2)}`,
+      `L ${x10.toFixed(2)} ${y10.toFixed(2)}`,
+      `A ${r0} ${r0} 0 ${large} 0 ${x11.toFixed(2)} ${y11.toFixed(2)}`,
+      "Z"
+    ].join(" ");
+    paths.push(`<path d="${d}" fill="${it.color}" opacity="0.92" />`);
+    a0 = a1;
+  }
+  const center = `
+    <text x="${cx}" y="${cy-6}" text-anchor="middle" font-family="American Typewriter, Courier New, monospace" font-size="18" fill="#1E2630">${fmtYen(total)}</text>
+    <text x="${cx}" y="${cy+18}" text-anchor="middle" font-family="American Typewriter, Courier New, monospace" font-size="12" fill="#1E2630" opacity="0.60">this month</text>
+  `;
+  return `<svg class="pie" viewBox="0 0 240 240" role="img" aria-label="Monthly expense pie chart">
+    <defs>
+      <filter id="pieShadow" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity="0.10"/>
+      </filter>
+    </defs>
+    <circle cx="120" cy="120" r="96" fill="rgba(255,255,255,0.22)" stroke="rgba(30,38,48,0.10)" />
+    <g filter="url(#pieShadow)">${paths.join("")}</g>
+    ${center}
+  </svg>`;
+}
+
+function renderStats(){
+  const left = `<button class="iconBtn" id="back" aria-label="Back">←</button>`;
+  const right = `<button class="iconBtn" id="goSettings" aria-label="Settings">⚙️</button>`;
+
+  const anchor = startOfMonth(new Date(state.statsMonthISO));
+  const sums = computeMonthSums(anchor);
+  const items = TYPES
+    .map(t=>({ id:t.id, name:t.name, color:t.color, value: Math.max(0, sums[t.id] || 0) }))
+    .filter(x=>x.value > 0.0001)
+    .sort((a,b)=>b.value-a.value);
+
+  const total = items.reduce((s,x)=>s+x.value,0);
+
+  app.innerHTML = `
+    ${topbar(left, right)}
+    <div class="titleBlock">
+      <div class="title">Overview</div>
+      <div class="sub">A gentle monthly summary.</div>
+    </div>
+
+    <div class="statsHeader">
+      <button class="navBtn" id="prevM" aria-label="Previous month">‹</button>
+      <div class="m">${monthTitle(anchor)}</div>
+      <button class="navBtn" id="nextM" aria-label="Next month">›</button>
+    </div>
+
+    <div class="statsCard">
+      <div class="pieRow">
+        ${total > 0 ? pieSVG(items, total) : `<div class="small" style="padding:14px 0; text-align:center;">No amounts in this month yet.</div>`}
+      </div>
+
+      ${total > 0 ? `
+      <div class="legend">
+        ${items.map(it=>`
+          <div class="legItem">
+            ${iconImg(it.id,"iconCardImg")}
+            <div class="legTxt">
+              <div class="n">${escapeHTML(it.name)}</div>
+              <div class="v">${fmtYen(it.value)}</div>
+            </div>
+          </div>
+        `).join("")}
+      </div>` : ``}
+    </div>
+  `;
+
+  document.getElementById("back").onclick = ()=>{ state.view="tree"; render(); };
+  document.getElementById("goSettings").onclick = ()=>{ state.view="settings"; render(); };
+
+  document.getElementById("prevM").onclick = ()=>{
+    const d = addMonths(anchor, -1);
+    state.statsMonthISO = d.toISOString();
+    renderStats();
+  };
+  document.getElementById("nextM").onclick = ()=>{
+    const d = addMonths(anchor, 1);
+    state.statsMonthISO = d.toISOString();
+    renderStats();
+  };
 }
 
 // Start
