@@ -316,8 +316,7 @@ function openTypePicker(){
                 <span class="iconMini">${TYPE_ICON[t.id] || ""}</span>
                 <div>
                   <div class="pName">${t.name}</div>
-                  <div class="pHint">${t.hint}</div>
-                </div>
+                  </div>
               </div>
             </button>
           `).join("")}
@@ -433,8 +432,7 @@ function wireEditor(mode){
                   <span class="iconMini">${TYPE_ICON[t.id] || ""}</span>
                   <div>
                     <div class="pName">${t.name}</div>
-                    <div class="pHint">${t.hint}</div>
-                  </div>
+                    </div>
                 </div>
               </button>
             `).join("")}

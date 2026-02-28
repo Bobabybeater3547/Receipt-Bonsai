@@ -256,3 +256,24 @@ hr.hair{ border:0; border-top: 1px solid rgba(30,38,48,0.10); margin: 12px 0; }
   .iconMini{ width: 26px; height: 26px; }
   .iconMini svg{ width: 26px; height: 26px; }
 }
+
+
+/* Mobile picker layout: 2 columns + icon above text (prevents edge clipping) */
+@media (max-width: 520px){
+  .pickGrid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pickBtn{ text-align:center; padding: 14px 10px; }
+  .pickBtn .pTop{ flex-direction: column; align-items: center; gap: 8px; }
+  .pickBtn .pTop > div{ min-width: 0; }
+  .pickBtn .pName{ font-size: 14px; }
+  .pickBtn .pHint{ font-size: 11px; }
+}
+
+
+/* Picker tiles: icon above text, no subtitle (3 columns on iPhone) */
+.pickBtn{ text-align:center; }
+.pickBtn .pTop{ flex-direction: column; align-items:center; gap: 8px; }
+.pickBtn .pHint{ display:none; }
+
+@media (max-width: 520px){
+  .pickGrid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
