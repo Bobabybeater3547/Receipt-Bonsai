@@ -99,6 +99,7 @@ const state = {
 };
 
 let data = loadData();
+let lastAddedId = null;
 
 function loadData(){
   try{
@@ -164,6 +165,15 @@ function closeModal(rerender=true){
   if(rerender) render();
 }
 
+
+function animateOnce(el, className, ms){
+  if(!el) return;
+  el.classList.remove(className);
+  // force reflow
+  void el.getBBox?.();
+  el.classList.add(className);
+  setTimeout(()=>{ el.classList.remove(className); }, ms);
+}
 function render(){
   if(state.view === "tree") renderTree();
   if(state.view === "list") renderList();
@@ -192,65 +202,16 @@ function renderTree(){
         </div>
         <svg id="treeSvg" viewBox="0 0 800 820" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Your receipt bonsai">
   <defs>
-    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000" flood-opacity="0.12"/>
-    </filter>
     <filter id="leafSoft" x="-30%" y="-30%" width="160%" height="160%">
       <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000" flood-opacity="0.14"/>
     </filter>
-    <linearGradient id="potGrad" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.35"/>
-      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.10"/>
-    </linearGradient>
-    <linearGradient id="groundGrad" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#ffffff" stop-opacity="0.10"/>
-      <stop offset="1" stop-color="#ffffff" stop-opacity="0.0"/>
-    </linearGradient>
-
-    <symbol id="leafShape" viewBox="-40 -40 80 80">
-      <path d="M-6 26c18-6 32-24 28-40C14-26-6-36-20-28c-14 8-18 32 14 54z"
-            fill="currentColor" opacity="0.92"/>
-      <path d="M-18 -22c10 12 18 28 22 48" fill="none" stroke="#1E2630" opacity="0.16" stroke-width="2.4" stroke-linecap="round"/>
-      <path d="M-4 2c-8 2-14 8-16 16" fill="none" stroke="#1E2630" opacity="0.10" stroke-width="2.0" stroke-linecap="round"/>
-    </symbol>
-
-    <symbol id="leafReceipt" viewBox="-20 -20 40 40">
-      <path d="M-10 -12h20v22l-3-2-3 2-3-2-3 2-3-2-3 2V-12z" fill="#FBF6EE" opacity="0.75"/>
-      <path d="M-6 -6h12M-6 -2h12M-6 2h9" stroke="#C67970" stroke-width="2.0" stroke-linecap="round" opacity="0.85"/>
-    </symbol>
   </defs>
 
-  <ellipse cx="400" cy="760" rx="320" ry="55" fill="url(#groundGrad)"/>
+  <!-- Bonsai stage art (cute illustration) -->
+  <image id="bonsaiStageImage" href="./bonsai/stage_0.png" x="0" y="0" width="800" height="820" preserveAspectRatio="xMidYMid meet" />
 
-  <g filter="url(#softShadow)">
-    <path d="M410 620c6-70 2-120-8-165-14-60-34-104-32-150 2-44 30-82 68-96"
-          fill="none" stroke="#7A4636" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" opacity="0.92"/>
-    <path d="M395 505c-26-16-54-34-76-68-14-22-20-46-18-72"
-          fill="none" stroke="#7A4636" stroke-width="14" stroke-linecap="round" opacity="0.92"/>
-    <path d="M420 470c28-18 58-42 80-78 14-24 18-50 12-78"
-          fill="none" stroke="#7A4636" stroke-width="14" stroke-linecap="round" opacity="0.92"/>
-    <path d="M360 410c-30-10-54-26-70-52"
-          fill="none" stroke="#7A4636" stroke-width="12" stroke-linecap="round" opacity="0.92"/>
-    <path d="M455 400c28-12 52-30 68-58"
-          fill="none" stroke="#7A4636" stroke-width="12" stroke-linecap="round" opacity="0.92"/>
-    <path d="M438 330c22-18 40-40 48-68"
-          fill="none" stroke="#7A4636" stroke-width="10" stroke-linecap="round" opacity="0.92"/>
-    <path d="M352 330c-20-16-36-38-42-66"
-          fill="none" stroke="#7A4636" stroke-width="10" stroke-linecap="round" opacity="0.92"/>
-  </g>
-
+  <!-- Leaves drawn by JS -->
   <g id="leafLayer"></g>
-
-  <g filter="url(#softShadow)">
-    <path d="M260 620h280l-26 130c-3 18-18 32-36 32H322c-18 0-33-14-36-32l-26-130z"
-          fill="url(#potGrad)" stroke="#C67970" stroke-width="6" stroke-linejoin="round"/>
-    <path d="M248 620c40-34 264-34 304 0" fill="none" stroke="#C67970" stroke-width="6" stroke-linecap="round"/>
-    <circle cx="360" cy="700" r="8" fill="#1E2630" opacity="0.45"/>
-    <circle cx="440" cy="700" r="8" fill="#1E2630" opacity="0.45"/>
-    <path d="M392 728c14 10 30 10 44 0" fill="none" stroke="#1E2630" opacity="0.35" stroke-width="5" stroke-linecap="round"/>
-  </g>
-
-  <path d="M290 628c30-24 190-24 220 0" fill="#1E2630" opacity="0.06"/>
 </svg>
 
       </div>
@@ -266,6 +227,22 @@ function renderTree(){
   drawLeaves();
 }
 
+
+function stageIndex(n){
+  // 12 stages (0..11). Keep it gentle at the start, slower later.
+  if(n <= 0) return 0;
+  if(n <= 1) return 1;
+  if(n <= 3) return 2;
+  if(n <= 6) return 3;
+  if(n <= 10) return 4;
+  if(n <= 15) return 5;
+  if(n <= 22) return 6;
+  if(n <= 30) return 7;
+  if(n <= 40) return 8;
+  if(n <= 55) return 9;
+  if(n <= 75) return 10;
+  return 11;
+}
 function growthStage(n){
   if(n === 0) return "Seedling. Add your first leaf.";
   if(n < 6) return "Sprouting.";
@@ -282,72 +259,66 @@ function drawLeaves(){
 
   const entries = [...data.entries].sort((a,b)=>new Date(a.at)-new Date(b.at));
 
-  const LEAF_D = "M-6 26c18-6 32-24 28-40C14-26-6-36-20-28c-14 8-18 32 14 54z";
-  const RECEIPT_D = "M-10 -12h20v22l-3-2-3 2-3-2-3 2-3-2-3 2V-12z";
-
   entries.forEach((e, idx)=>{
     const anchor = ANCHORS[idx % ANCHORS.length];
     const jitter = seededJitter(e.id);
 
     const x = anchor[0] + jitter[0];
     const y = anchor[1] + jitter[1];
+
     const rot = jitter[2];
+    const swayDelay = ((jitter[0] + 30) % 30) / 10; // 0..3s-ish
 
-    const t = TYPES.find(t=>t.id===e.type) || TYPES[TYPES.length-1];
-    const color = t.color || "#BFE7D1";
+    const outer = document.createElementNS("http://www.w3.org/2000/svg","g");
+    outer.setAttribute("class","leafHit");
+    outer.setAttribute("data-id", e.id);
+    outer.setAttribute("transform", `translate(${x} ${y})`);
+    outer.setAttribute("filter","url(#leafSoft)");
 
-    const g = document.createElementNS("http://www.w3.org/2000/svg","g");
-    g.setAttribute("class","leafHit");
-    g.setAttribute("data-id", e.id);
-    g.setAttribute("filter","url(#leafSoft)");
-    g.setAttribute("transform", `translate(${x} ${y}) rotate(${rot}) scale(0.88)`);
+    // base transform (rotate + scale) separated from sway so CSS can add motion
+    const base = document.createElementNS("http://www.w3.org/2000/svg","g");
+    base.setAttribute("transform", `rotate(${rot}) scale(0.92)`);
 
-    const fill = document.createElementNS("http://www.w3.org/2000/svg","path");
-    fill.setAttribute("d", LEAF_D);
-    fill.setAttribute("fill", color);
-    fill.setAttribute("opacity", "0.88");
-    g.appendChild(fill);
+    const sway = document.createElementNS("http://www.w3.org/2000/svg","g");
+    sway.setAttribute("class", "leafSway");
+    sway.setAttribute("style", `animation-delay: -${swayDelay.toFixed(2)}s;`);
 
-    const hi = document.createElementNS("http://www.w3.org/2000/svg","path");
-    hi.setAttribute("d", "M-10 -20c10 10 18 26 22 44");
-    hi.setAttribute("fill","none");
-    hi.setAttribute("stroke","#FFFFFF");
-    hi.setAttribute("opacity","0.18");
-    hi.setAttribute("stroke-width","3");
-    hi.setAttribute("stroke-linecap","round");
-    g.appendChild(hi);
+    if(lastAddedId && e.id === lastAddedId){
+      sway.classList.add("leafPop");
+    }
 
-    const outline = document.createElementNS("http://www.w3.org/2000/svg","path");
-    outline.setAttribute("d", LEAF_D);
-    outline.setAttribute("fill","none");
-    outline.setAttribute("stroke","#C67970");
-    outline.setAttribute("stroke-width","2.3");
-    outline.setAttribute("opacity","0.55");
-    outline.setAttribute("stroke-linecap","round");
-    outline.setAttribute("stroke-linejoin","round");
-    g.appendChild(outline);
+    const img = document.createElementNS("http://www.w3.org/2000/svg","image");
+    img.setAttribute("href", `./bonsai/leaf_${e.type}.png`);
+    img.setAttribute("x", "-48");
+    img.setAttribute("y", "-48");
+    img.setAttribute("width", "96");
+    img.setAttribute("height", "96");
+    img.setAttribute("preserveAspectRatio","xMidYMid meet");
 
-    const sticker = document.createElementNS("http://www.w3.org/2000/svg","path");
-    sticker.setAttribute("d", RECEIPT_D);
-    sticker.setAttribute("fill", "#FBF6EE");
-    sticker.setAttribute("opacity", "0.72");
-    sticker.setAttribute("transform","translate(8 2) scale(0.9)");
-    g.appendChild(sticker);
+    sway.appendChild(img);
+    base.appendChild(sway);
+    outer.appendChild(base);
 
-    const lines = document.createElementNS("http://www.w3.org/2000/svg","path");
-    lines.setAttribute("d","M2 -4h12M2 0h12M2 4h9");
-    lines.setAttribute("fill","none");
-    lines.setAttribute("stroke","#C67970");
-    lines.setAttribute("stroke-width","2.1");
-    lines.setAttribute("stroke-linecap","round");
-    lines.setAttribute("opacity","0.78");
-    lines.setAttribute("transform","translate(8 2)");
-    g.appendChild(lines);
-
-    g.addEventListener("click", ()=> openEdit(e.id));
-    layer.appendChild(g);
+    outer.addEventListener("click", ()=> {
+      animateOnce(sway, "leafTap", 320);
+      // open editor shortly after wobble starts
+      setTimeout(()=>openEdit(e.id), 60);
+    });
+    layer.appendChild(outer);
   });
+
+  // pop only once
+  lastAddedId = null;
 }
+
+function updateStageArt(){
+  const img = document.getElementById("bonsaiStageImage");
+  if(!img) return;
+  const n = data.entries.length;
+  const s = stageIndex(n);
+  img.setAttribute("href", `./bonsai/stage_${s}.png`);
+}
+
 
 
 function seededJitter(seed){
@@ -546,7 +517,7 @@ function wireEditor(mode){
     const entry = { id, type, at, note, amount };
     const idx = data.entries.findIndex(x=>x.id===id);
     if(idx >= 0) data.entries[idx] = entry;
-    else data.entries.push(entry);
+    else { data.entries.push(entry); lastAddedId = id; }
 
     data.entries.sort((a,b)=>new Date(a.at)-new Date(b.at));
     saveData();
