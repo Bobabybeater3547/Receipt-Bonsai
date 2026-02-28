@@ -194,7 +194,7 @@ function renderTree(){
     ${topbar(left, right)}
     <div class="titleBlock">
       <div class="title">Receipt Bonsai</div>
-      <div class="sub">Tiny receipts become leaves. No guilt. Just a tree.</div>
+      <div class="sub">A bonsai grown from daily expenses.</div>
     </div>
 
     <div class="panel">
