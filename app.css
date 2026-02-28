@@ -30,7 +30,7 @@ button, input, textarea, select { font-family: inherit; }
 .titleBlock .title{ font-size: 26px; }
 .titleBlock .sub{ font-size: 12px; opacity: 0.65; margin-top: 6px; }
 .panel{ margin: 8px 18px 0; border-radius: 22px; border: 1px solid rgba(30,38,48,0.10); background: rgba(255,255,255,0.18); overflow:hidden; }
-.treeWrap{ padding: 16px 16px 10px; }
+.treeWrap{ padding: 16px 16px 10px; position: relative; }
 .treeMeta{ display:flex; align-items:center; justify-content:space-between; padding: 0 4px 10px; }
 .pill{ border: 1px solid rgba(30,38,48,0.12); background: rgba(255,255,255,0.25); border-radius: 999px; padding: 8px 10px; font-size: 12px; opacity: 0.85; }
 .treeStage{ font-size: 12px; opacity: 0.65; }
@@ -162,3 +162,78 @@ hr.hair{ border:0; border-top: 1px solid rgba(30,38,48,0.10); margin: 12px 0; }
   100% { transform: translateY(0px) scale(1); }
 }
 #treeSvg { animation: bonsaiBreathe2 7.2s ease-in-out infinite; transform-origin: center; }
+
+
+/* Receipt note overlay stack */
+.noteOverlay{
+  position:absolute;
+  left: 18px;
+  top: 58px; /* below pills */
+  width: min(420px, calc(100% - 36px));
+  pointer-events: none;
+  z-index: 20;
+}
+.receiptNote{
+  position:absolute;
+  width: 100%;
+  max-width: 420px;
+  border-radius: 16px;
+  border: 1px solid rgba(30,38,48,0.14);
+  background: rgba(255,255,255,0.62);
+  box-shadow: 0 14px 35px rgba(0,0,0,0.14);
+  padding: 12px 12px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  overflow:hidden;
+}
+.receiptNote::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(198,121,112,0.10), transparent 40%),
+    radial-gradient(circle at 80% 30%, rgba(119,181,146,0.10), transparent 45%),
+    radial-gradient(circle at 40% 90%, rgba(246,225,166,0.10), transparent 45%);
+  opacity:0.8;
+  pointer-events:none;
+}
+.receiptNote .row1{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap: 10px;
+  position:relative;
+}
+.receiptNote .when{
+  font-size: 12px;
+  opacity: 0.70;
+}
+.receiptNote .type{
+  font-size: 13px;
+  opacity: 0.92;
+}
+.receiptNote .amt{
+  font-size: 12px;
+  opacity: 0.70;
+  white-space: nowrap;
+}
+.receiptNote .note{
+  margin-top: 6px;
+  font-size: 13px;
+  line-height: 1.35;
+  opacity: 0.92;
+  position:relative;
+  white-space: pre-wrap;
+}
+.receiptNote .hint{
+  margin-top: 6px;
+  font-size: 11px;
+  opacity: 0.62;
+  position:relative;
+}
+
+@keyframes noteIn {
+  0% { transform: translateY(-8px) scale(0.98); opacity: 0; }
+  100% { transform: translateY(0px) scale(1); opacity: 1; }
+}
+.noteIn{ animation: noteIn 220ms ease-out 1; }

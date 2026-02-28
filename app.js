@@ -99,6 +99,8 @@ const state = {
 };
 
 let data = loadData();
+let noteCursor = 0;
+let shownNoteIds = [];
 let lastStage = null;
 let lastAddedId = null;
 
@@ -192,7 +194,7 @@ function renderTree(){
     ${topbar(left, right)}
     <div class="titleBlock">
       <div class="title">Receipt Bonsai</div>
-      <div class="sub">A bonsai grown from daily expenses.</div>
+      <div class="sub">Tiny receipts become leaves. No guilt. Just a tree.</div>
     </div>
 
     <div class="panel">
@@ -225,6 +227,8 @@ function renderTree(){
 
   // Sync the bonsai stage with your receipt count
   updateStageArt(true);
+  bindBonsaiTap();
+  renderNoteOverlay();
 
 }
 
@@ -447,6 +451,9 @@ function wireEditor(mode){
         const id = document.getElementById("eid").value;
         data.entries = data.entries.filter(x=>x.id !== id);
         saveData();
+        // cleanup overlay stack
+        shownNoteIds = shownNoteIds.filter(id2 => data.entries.some(e2=>e2.id===id2));
+        if(noteCursor > data.entries.length) noteCursor = data.entries.length;
         closeModal();
       }
     };
@@ -474,6 +481,7 @@ function wireEditor(mode){
 
     data.entries.sort((a,b)=>new Date(a.at)-new Date(b.at));
     saveData();
+    shownNoteIds = shownNoteIds.filter(id2 => data.entries.some(e2=>e2.id===id2));
     closeModal();
   };
 }
@@ -603,6 +611,8 @@ function renderSettings(){
   document.getElementById("clearAll").onclick = ()=>{
     if(confirm("Clear all leaves? This cannot be undone.")){
       data = { entries: [], prefs: { showAmounts: true } };
+      noteCursor = 0;
+      shownNoteIds = [];
       saveData();
       alert("Cleared.");
       state.view = "tree";
@@ -629,6 +639,8 @@ function importJSONBackup(ev){
       if(typeof parsed.prefs.showAmounts !== "boolean") parsed.prefs.showAmounts = true;
       data = parsed;
       saveData();
+      noteCursor = 0;
+      shownNoteIds = [];
       alert("Imported.");
       render();
     }catch(e){
@@ -690,6 +702,98 @@ function downloadBlob(blob, filename){
   a.click();
   a.remove();
   setTimeout(()=>URL.revokeObjectURL(url), 500);
+}
+
+
+function bindBonsaiTap(){
+  const svg = document.getElementById("treeSvg");
+  if(!svg || svg.dataset.tapbound === "1") return;
+  svg.dataset.tapbound = "1";
+  svg.addEventListener("click", (ev)=>{
+    // ignore clicks that are clearly not on the tree (e.g., if future UI is added)
+    showNextReceiptNote();
+  }, {passive:true});
+}
+
+function recentEntriesDesc(){
+  return [...data.entries].sort((a,b)=>new Date(b.at)-new Date(a.at));
+}
+
+function showNextReceiptNote(){
+  const entries = recentEntriesDesc();
+  if(entries.length === 0){
+    // nothing to show; do a gentle shake by toggling class?
+    return;
+  }
+
+  // If we've already shown 5 notes, reset stack (then show latest again)
+  if(shownNoteIds.length >= 5 || noteCursor >= entries.length){
+    noteCursor = 0;
+    shownNoteIds = [];
+    renderNoteOverlay();
+  }
+
+  const e = entries[noteCursor];
+  noteCursor += 1;
+
+  // Avoid duplicates if user deleted entries
+  if(!e) return;
+  shownNoteIds.push(e.id);
+  renderNoteOverlay(true);
+}
+
+function renderNoteOverlay(animateNew=false){
+  const host = document.getElementById("noteOverlay");
+  if(!host) return;
+
+  const entriesById = new Map(data.entries.map(e=>[e.id,e]));
+  const list = shownNoteIds.map(id=>entriesById.get(id)).filter(Boolean);
+  // newest displayed at bottom, newest tap on top: keep order as shownNoteIds (latest first, then older)
+  host.innerHTML = "";
+
+  list.forEach((e, i)=>{
+    const t = TYPES.find(x=>x.id===e.type) || TYPES[TYPES.length-1];
+    const idx = i; // 0..n-1
+    // Overlap offsets
+    const dx = idx * 10;
+    const dy = idx * 12;
+    // Tiny rotation for cuteness (deterministic from id)
+    const rot = ((seededJitter(e.id)[2] || 0) / 12).toFixed(2); // about [-2,2]
+    const z = 50 + idx;
+
+    const showAmt = !!data.prefs.showAmounts;
+    const amt = (showAmt && e.amount) ? `¥${escapeHTML(e.amount)}` : "";
+
+    const note = formatReceiptSnippet(e.note || "");
+    const hint = escapeHTML(t.hint || "");
+
+    const div = document.createElement("div");
+    div.className = "receiptNote" + ((animateNew && idx === list.length-1) ? " noteIn" : "");
+    div.style.transform = `translate(${dx}px, ${dy}px) rotate(${rot}deg)`;
+    div.style.zIndex = String(z);
+
+    div.innerHTML = `
+      <div class="row1">
+        <div>
+          <div class="type">${escapeHTML(t.name)}</div>
+          <div class="when">${shortDate(e.at)}</div>
+        </div>
+        ${amt ? `<div class="amt">${amt}</div>` : ``}
+      </div>
+      ${note ? `<div class="note">${escapeHTML(note)}</div>` : ``}
+      <div class="hint">${hint}</div>
+    `;
+    host.appendChild(div);
+  });
+}
+
+function formatReceiptSnippet(s){
+  const txt = String(s || "").trim();
+  if(!txt) return "";
+  // single-line-ish snippet
+  const one = txt.replace(/\s+/g, " ");
+  if(one.length <= 90) return one;
+  return one.slice(0, 88) + "…";
 }
 
 // Start
